@@ -1,8 +1,21 @@
 <template>
   <div id="app">
+    <div class="head-navbar">
+      <div class="head-n-item" @click="min">
+        <i class="icon-dash1"></i>
+      </div>
+      <div class="head-n-item" @click="max">
+        <i :class="this.isMaxIcon==true?'icon-fullscreen1':'icon-fullscreen-exit1'"></i>
+      </div>
+      <div class="head-n-item" @click="close">
+        <i class="icon-x1"></i>
+      </div>
+    </div>
     <div v-if="this.$route.path=='/'">
       <div class="navbar">
-        <img :src="user.image" class="nav-userimage" />
+        <a class="nav-link" @click="pages=nav.id">
+          <img :src="user.image" class="nav-userimage" />
+        </a>
         <ul class="navbar-nav">
           <li
             class="nav-item"
@@ -16,7 +29,7 @@
             </a>
           </li>
         </ul>
-        <ul class="navbar-nav" style="position: absolute;bottom: 0;">
+        <ul class="navbar-nav" style="position: absolute;bottom: 31px;">
           <router-link class="nav-link" target="_blank" to="/schedule">
             <li class="nav-item">
               <i class="icon-calendar-check-fill1"></i>
@@ -40,8 +53,7 @@
 </template>
 
 <style>
-@import url("assets/icons/style.css");
-@import url("assets/fonts/VASVADIA.TTF");
+@import url("./assets/icons/style.css");
 
 * {
   padding: 0;
@@ -66,6 +78,8 @@ ol {
 html {
   overflow: hidden;
   position: relative;
+  border-radius: 5px;
+  box-shadow: 0 8px 12px #6e6f70;
 }
 
 body {
@@ -73,9 +87,10 @@ body {
 }
 
 .navbar {
+  -webkit-app-region: drag;
   height: 100vh;
   width: 5vw;
-  top: 0;
+  top: 31px;
   left: 0;
   text-align: center;
   background: var(--theame);
@@ -83,13 +98,16 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  z-index: 20;
 }
 
 .nav-link {
   cursor: pointer;
+  -webkit-app-region: no-drag;
 }
 
 .nav-item {
+  -webkit-app-region: no-drag;
   font-size: 18px;
   margin: 1vw 0;
   opacity: 0.8;
@@ -122,6 +140,32 @@ body {
   padding-left: 5.5vw;
   height: 100vh;
 }
+
+.head-navbar {
+  -webkit-app-region: drag;
+  z-index: 50;
+  height: 30px;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  line-height: 30px;
+  text-align: right;
+}
+.head-n-item {
+  -webkit-app-region: no-drag;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: 0.1s;
+  height: 100%;
+}
+.head-n-item:hover {
+  color: #1280ff;
+}
 </style>
 
 <script>
@@ -129,6 +173,7 @@ export default {
   name: "app",
   data() {
     return {
+      isMaxIcon:true,
       pages: 1,
       user: {
         name: "laizq",
@@ -157,6 +202,26 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    min() {
+      remote.getCurrentWindow().minimize();
+    },
+    max() {
+      if (remote.getCurrentWindow().isMaximized()) {
+        remote.getCurrentWindow().restore();
+        this.isMaxIcon = true;
+      } else {
+        remote.getCurrentWindow().maximize();
+        this.isMaxIcon = false;
+      }
+    },
+    close() {
+      remote.getCurrentWindow().close();
+    }
   }
 };
 </script>
+
+
+
