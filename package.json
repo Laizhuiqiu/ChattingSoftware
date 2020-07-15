@@ -13,6 +13,8 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
+    "electron": "^9.1.0",
+    "electron-packager": "^15.0.0",
     "vue-template-compiler": "^2.6.10"
   }
 }
